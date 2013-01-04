@@ -7,3 +7,5 @@ build
 *.map
 *.sym
 *.xcodeproj
+*.hex
+*.o
