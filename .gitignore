@@ -1,0 +1,9 @@
+Makefile
+build
+*.eep
+*.elf
+*.lss
+*.lst
+*.map
+*.sym
+*.xcodeproj
