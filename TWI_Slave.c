@@ -46,7 +46,7 @@
 #define WDTBIT			7
 
 
-#define WOZIPORT	PORTD		// Ausgang fuer LABOR
+#define OUTPORT	PORTD		// Ausgang fuer LABOR
 #define LAMPEBIT 0
 
 #define SERVOPORT	PORTD		// Ausgang fuer Servo
@@ -128,7 +128,7 @@ uint16_t EEMEM Brennerlaufzeit;	// Akkumulierte Laufzeit
 
 void delay_ms(unsigned int ms);
 
-static volatile uint8_t WoZistatus=0x00;
+static volatile uint8_t Raumstatus=0x00;
 static volatile uint8_t Radiatorstatus=0x00;
 
 volatile uint16_t Servotakt=20;					//	Abstand der Impulspakete
@@ -462,11 +462,11 @@ void main (void)
 	lcd_cls();
 	lcd_puts("READY\0");
 	
-	WOZIPORT &= ~(1<<LAMPEEIN);//	LAMPEEIN sicher low
-	WOZIPORT &= ~(1<<LAMPEAUS);//	LAMPEAus sicher low
-	WOZIPORT |= (1<<LAMPEAUS);
+	OUTPORT &= ~(1<<LAMPEEIN);//	LAMPEEIN sicher low
+	OUTPORT &= ~(1<<LAMPEAUS);//	LAMPEAus sicher low
+	OUTPORT |= (1<<LAMPEAUS);
 	delay_ms(10);
-	WOZIPORT &= ~(1<<LAMPEAUS);
+	OUTPORT &= ~(1<<LAMPEAUS);
    
 	uint8_t Tastenwert=0;
 	uint8_t TastaturCount=0;
@@ -748,8 +748,7 @@ void main (void)
                 lcd_putint2(Servorichtung);
                 lcd_puts(" W:\0");
                 lcd_putint2(Servowert);
-                */
-					
+                */					
 					
 					Servowert=rxbuffer[3];
 					
@@ -763,14 +762,15 @@ void main (void)
 			//RingD2(2);
 			//delay_ms(20);
 			
-			WoZistatus=rxbuffer[0];
+			Raumstatus=rxbuffer[0];
 			lcd_gotoxy(16,1);
 			//cli();
+         
 			lcd_puts("St:\0");
-			//lcd_puthex(WoZistatus);
+			//lcd_puthex(Raumstatus);
 			//sei();
 			//delay_ms(1000);
-			if ( WoZistatus  & (1<<LAMPEBIT))
+			if ( Raumstatus  & (1<<LAMPEBIT))
          {
             //delay_ms(1000);
             //Schaltuhr ein
@@ -778,11 +778,11 @@ void main (void)
             lcd_gotoxy(19,1);
             lcd_putc('1');
             //sei();
-            WOZIPORT &= ~(1<<LAMPEAUS);//	LAMPEAUS sicher low
-            WOZIPORT &= ~(1<<LAMPEEIN);//	LAMPEEIN sicher low
-            WOZIPORT |= (1<<LAMPEEIN);
+            OUTPORT &= ~(1<<LAMPEAUS);//	LAMPEAUS sicher low
+            OUTPORT &= ~(1<<LAMPEEIN);//	LAMPEEIN sicher low
+            OUTPORT |= (1<<LAMPEEIN);
             delay_ms(20);
-            WOZIPORT &= ~(1<<LAMPEEIN);
+            OUTPORT &= ~(1<<LAMPEEIN);
          }
          else
          {
@@ -792,11 +792,11 @@ void main (void)
             lcd_gotoxy(19,1);
             lcd_putc('0');
             //sei();
-            WOZIPORT &= ~(1<<LAMPEEIN);//	LAMPEEIN sicher low
-            WOZIPORT &= ~(1<<LAMPEAUS);//	LAMPEAUS sicher low
-            WOZIPORT |= (1<<LAMPEAUS);
+            OUTPORT &= ~(1<<LAMPEEIN);//	LAMPEEIN sicher low
+            OUTPORT &= ~(1<<LAMPEAUS);//	LAMPEAUS sicher low
+            OUTPORT |= (1<<LAMPEAUS);
             delay_ms(20);
-            WOZIPORT &= ~(1<<LAMPEAUS);
+            OUTPORT &= ~(1<<LAMPEAUS);
          }
 			
 			
